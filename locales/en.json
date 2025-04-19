@@ -1,0 +1,40 @@
+{
+  "general": {
+    "accessibility": {
+      "skip_to_text": "Skip to content"
+    },
+    "search": {
+      "title": "Search",
+      "submit": "Search"
+    },
+    "navigation": {
+      "menu": "Menu"
+    }
+  },
+  "layout": {
+    "customer": {
+      "account": "Account"
+    },
+    "cart": {
+      "title": "Cart"
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Cart"
+    }
+  },
+  "sections": {
+    "footer": {
+      "payment": {
+        "payment_methods": "Payment methods"
+      }
+    }
+  },
+  "testimonials": {
+    "general": {
+      "verified_purchase": "Verified Purchase",
+      "star_rating": "{{ rating }} out of 5 stars"
+    }
+  }
+}

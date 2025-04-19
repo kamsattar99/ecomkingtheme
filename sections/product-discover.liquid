@@ -1,0 +1,186 @@
+{% comment %}
+  Discover Section with Wavy Background
+  From Atlas theme - adapted for Ecom King Theme
+{% endcomment %}
+
+<div class="discover-section" data-section-id="{{ section.id }}" data-section-type="discover-section" style="background-color: {{ section.settings.background_color }}; color: {{ section.settings.text_color }};">
+  <div class="discover-section__wave-bg">
+    <svg viewBox="0 0 1440 320" preserveAspectRatio="none">
+      <path fill="{{ section.settings.background_color }}" fill-opacity="1" d="M0,160L48,165.3C96,171,192,181,288,176C384,171,480,149,576,149.3C672,149,768,171,864,176C960,181,1056,171,1152,165.3C1248,160,1344,160,1392,160L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+    </svg>
+  </div>
+  
+  <div class="discover-section__content container">
+    <div class="rich-text text-center">
+      <div class="rich-text__heading">
+        <h2>{{ section.settings.heading }}</h2>
+      </div>
+      <div class="rich-text__text">
+        {{ section.settings.text }}
+      </div>
+      {% if section.settings.button_label != blank %}
+        <div class="rich-text__button">
+          <a href="{{ section.settings.button_link }}" class="btn">
+            {{ section.settings.button_label }}
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+  
+  <div class="discover-section__wave-bg discover-section__wave-bg--bottom">
+    <svg viewBox="0 0 1440 320" preserveAspectRatio="none">
+      <path fill="{{ section.settings.background_color }}" fill-opacity="1" d="M0,160L48,165.3C96,171,192,181,288,176C384,171,480,149,576,149.3C672,149,768,171,864,176C960,181,1056,171,1152,165.3C1248,160,1344,160,1392,160L1440,160L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path>
+    </svg>
+  </div>
+</div>
+
+<style>
+.discover-section {
+  position: relative;
+  padding: 80px 0;
+  margin: 60px 0;
+  overflow: hidden;
+}
+
+.discover-section__wave-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.discover-section__wave-bg--bottom {
+  top: auto;
+  bottom: 0;
+}
+
+.discover-section__wave-bg svg {
+  width: 100%;
+  height: 100%;
+}
+
+.discover-section__content {
+  position: relative;
+  z-index: 2;
+  padding: 60px 20px;
+}
+
+.rich-text {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.rich-text__heading {
+  margin-bottom: 20px;
+}
+
+.rich-text__heading h2 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 0;
+}
+
+.rich-text__text {
+  font-size: 1.6rem;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+.rich-text__button {
+  margin-top: 10px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 30px;
+  background-color: {{ section.settings.button_bg_color }};
+  color: {{ section.settings.button_text_color }};
+  border-radius: 4px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background-color: {{ section.settings.button_bg_color | color_darken: 10 }};
+}
+
+@media screen and (max-width: 767px) {
+  .discover-section {
+    padding: 40px 0;
+    margin: 40px 0;
+  }
+  
+  .discover-section__content {
+    padding: 40px 15px;
+  }
+  
+  .rich-text__heading h2 {
+    font-size: 2.4rem;
+  }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Discover Section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Discover Ecom King"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Explore our premium products designed to help your business grow. Our solutions are built with quality and performance in mind.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button background color",
+      "default": "#e1c68b"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text color",
+      "default": "#141414"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Wave background color",
+      "default": "#e1c68b"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#141414"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Discover Section",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

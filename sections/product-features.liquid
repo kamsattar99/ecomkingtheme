@@ -1,0 +1,264 @@
+{% comment %}
+  What You Can Expect Section with Feature Highlights
+  From Atlas theme - adapted for Ecom King Theme
+{% endcomment %}
+
+<div class="what-to-expect" data-section-id="{{ section.id }}" data-section-type="what-to-expect" style="background-color: {{ section.settings.background_color }}; color: {{ section.settings.text_color }};">
+  <div class="container">
+    <div class="section-header text-center">
+      <h2 class="section-header__title">{{ section.settings.title }}</h2>
+      {% if section.settings.subtitle != blank %}
+        <div class="section-header__subtitle">{{ section.settings.subtitle }}</div>
+      {% endif %}
+    </div>
+
+    <div class="expect-features">
+      <div class="expect-features__image">
+        {% if section.settings.image != blank %}
+          <img 
+            srcset="{%- if section.settings.image.width >= 550 -%}{{ section.settings.image | img_url: '550x' }} 550w,{%- endif -%}
+              {%- if section.settings.image.width >= 720 -%}{{ section.settings.image | img_url: '720x' }} 720w,{%- endif -%}
+              {%- if section.settings.image.width >= 990 -%}{{ section.settings.image | img_url: '990x' }} 990w,{%- endif -%}
+              {%- if section.settings.image.width >= 1100 -%}{{ section.settings.image | img_url: '1100x' }} 1100w{%- endif -%}"
+            src="{{ section.settings.image | img_url: '720x' }}"
+            alt="{{ section.settings.image.alt | escape }}"
+            width="{{ section.settings.image.width }}"
+            height="{{ section.settings.image.height }}"
+            loading="lazy"
+            class="expect-features__image-element"
+          >
+        {% else %}
+          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {% endif %}
+      </div>
+
+      <div class="expect-features__list">
+        <div class="expect-features__grid">
+          {% for block in section.blocks %}
+            <div class="expect-features__item" {{ block.shopify_attributes }} style="background-color: {{ section.settings.item_background_color }};">
+              <div class="expect-features__item-icon">
+                <div class="icon-circle" style="background-color: {{ section.settings.icon_background_color }}; color: {{ section.settings.icon_color }};">
+                  <i class="fas fa-check"></i>
+                </div>
+              </div>
+              <div class="expect-features__item-content">
+                {{ block.settings.text }}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.what-to-expect {
+  padding: 80px 0;
+}
+
+.section-header {
+  margin-bottom: 60px;
+}
+
+.section-header__title {
+  font-size: 2.8rem;
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+.section-header__subtitle {
+  font-size: 1.6rem;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.expect-features {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.expect-features__image {
+  width: 50%;
+  padding: 0 20px;
+  text-align: center;
+}
+
+.expect-features__image-element {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.expect-features__list {
+  width: 50%;
+  padding: 0 20px;
+}
+
+.expect-features__grid {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -10px;
+}
+
+.expect-features__item {
+  width: calc(50% - 20px);
+  margin: 10px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: flex-start;
+}
+
+.expect-features__item-icon {
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+.icon-circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+
+.expect-features__item-content {
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+@media screen and (max-width: 991px) {
+  .expect-features__image,
+  .expect-features__list {
+    width: 100%;
+  }
+  
+  .expect-features__image {
+    margin-bottom: 40px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .what-to-expect {
+    padding: 60px 0;
+  }
+  
+  .section-header {
+    margin-bottom: 40px;
+  }
+  
+  .section-header__title {
+    font-size: 2.4rem;
+  }
+  
+  .expect-features__item {
+    width: calc(100% - 20px);
+  }
+}
+</style>
+
+{% schema %}
+{
+  "name": "What You Can Expect",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "What you can expect"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subheading",
+      "default": "Our products are designed with your needs in mind"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Feature image"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#141414"
+    },
+    {
+      "type": "color",
+      "id": "item_background_color",
+      "label": "Feature item background",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "color",
+      "id": "icon_background_color",
+      "label": "Icon background color",
+      "default": "#e1c68b"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon color",
+      "default": "#141414"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Feature text",
+          "default": "Feature description goes here"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "What You Can Expect",
+      "category": "Custom",
+      "blocks": [
+        {
+          "type": "text",
+          "settings": {
+            "text": "Premium quality materials"
+          }
+        },
+        {
+          "type": "text",
+          "settings": {
+            "text": "Durable construction"
+          }
+        },
+        {
+          "type": "text",
+          "settings": {
+            "text": "Easy to use design"
+          }
+        },
+        {
+          "type": "text",
+          "settings": {
+            "text": "Backed by our guarantee"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

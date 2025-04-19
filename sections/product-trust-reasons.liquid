@@ -1,0 +1,419 @@
+{% comment %}
+  Reasons Why You Should Trust Us Section with Percentage Bars
+  From Atlas theme - adapted for Ecom King Theme
+{% endcomment %}
+
+<div class="trust-reasons" data-section-id="{{ section.id }}" data-section-type="trust-reasons" style="background-color: {{ section.settings.background_color }}; color: {{ section.settings.text_color }};">
+  <div class="container">
+    <div class="section-header text-center">
+      <h2 class="section-header__title">{{ section.settings.title }}</h2>
+      {% if section.settings.subtitle != blank %}
+        <div class="section-header__subtitle">{{ section.settings.subtitle }}</div>
+      {% endif %}
+    </div>
+
+    <div class="trust-reasons__content">
+      <div class="trust-reasons__stats">
+        {% for block in section.blocks %}
+          {% if block.type == 'stat' %}
+            <div class="trust-reasons__stat" {{ block.shopify_attributes }}>
+              <div class="trust-reasons__stat-text">
+                {{ block.settings.text }}
+              </div>
+              <div class="trust-reasons__stat-bar">
+                <div class="trust-reasons__stat-progress" style="width: {{ block.settings.percentage }}%">
+                  <span class="trust-reasons__stat-percentage">{{ block.settings.percentage }}%</span>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <div class="trust-reasons__image">
+        {% if section.settings.image != blank %}
+          <img 
+            srcset="{%- if section.settings.image.width >= 550 -%}{{ section.settings.image | img_url: '550x' }} 550w,{%- endif -%}
+              {%- if section.settings.image.width >= 720 -%}{{ section.settings.image | img_url: '720x' }} 720w,{%- endif -%}
+              {%- if section.settings.image.width >= 990 -%}{{ section.settings.image | img_url: '990x' }} 990w,{%- endif -%}
+              {%- if section.settings.image.width >= 1100 -%}{{ section.settings.image | img_url: '1100x' }} 1100w{%- endif -%}"
+            src="{{ section.settings.image | img_url: '720x' }}"
+            alt="{{ section.settings.image.alt | escape }}"
+            width="{{ section.settings.image.width }}"
+            height="{{ section.settings.image.height }}"
+            loading="lazy"
+            class="trust-reasons__image-element"
+          >
+        {% else %}
+          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% if section.settings.add_cta %}
+  <div class="trust-reasons__cta" style="background-color: {{ section.settings.cta_background_color }};">
+    <div class="container">
+      <div class="trust-reasons__cta-content">
+        {% if section.settings.cta_text != blank %}
+          <div class="trust-reasons__cta-text" style="color: {{ section.settings.cta_text_color }};">
+            {{ section.settings.cta_text }}
+          </div>
+        {% endif %}
+        
+        {% if section.settings.cta_button_text != blank %}
+          <div class="trust-reasons__cta-button">
+            <a href="{{ section.settings.cta_button_link }}" class="btn" style="background-color: {{ section.settings.cta_button_background }}; color: {{ section.settings.cta_button_text_color }};">
+              {{ section.settings.cta_button_text }}
+            </a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+<style>
+.trust-reasons {
+  padding: 80px 0;
+}
+
+.section-header {
+  margin-bottom: 60px;
+}
+
+.section-header__title {
+  font-size: 2.8rem;
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+.section-header__subtitle {
+  font-size: 1.6rem;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.trust-reasons__content {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.trust-reasons__stats {
+  width: 60%;
+  padding-right: 40px;
+}
+
+.trust-reasons__image {
+  width: 40%;
+  padding-left: 20px;
+}
+
+.trust-reasons__image-element {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.trust-reasons__stat {
+  margin-bottom: 30px;
+}
+
+.trust-reasons__stat-text {
+  margin-bottom: 10px;
+  font-size: 1.6rem;
+  font-weight: 500;
+}
+
+.trust-reasons__stat-bar {
+  height: 20px;
+  background-color: {{ section.settings.bar_background_color }};
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.trust-reasons__stat-progress {
+  height: 100%;
+  background-color: {{ section.settings.bar_color }};
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 10px;
+  transition: width 1.5s ease-in-out;
+}
+
+.trust-reasons__stat-percentage {
+  color: {{ section.settings.percentage_color }};
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.trust-reasons__cta {
+  padding: 50px 0;
+  margin-top: -1px;
+}
+
+.trust-reasons__cta-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.trust-reasons__cta-text {
+  font-size: 1.8rem;
+  font-weight: 600;
+  max-width: 70%;
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 30px;
+  border-radius: 4px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+@media screen and (max-width: 991px) {
+  .trust-reasons__stats,
+  .trust-reasons__image {
+    width: 100%;
+    padding: 0;
+  }
+  
+  .trust-reasons__image {
+    margin-top: 40px;
+    text-align: center;
+  }
+  
+  .trust-reasons__cta-text,
+  .trust-reasons__cta-button {
+    width: 100%;
+    max-width: 100%;
+    text-align: center;
+  }
+  
+  .trust-reasons__cta-text {
+    margin-bottom: 20px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .trust-reasons {
+    padding: 60px 0;
+  }
+  
+  .section-header {
+    margin-bottom: 40px;
+  }
+  
+  .section-header__title {
+    font-size: 2.4rem;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize progress bars at 0% width and animate them
+  const progressBars = document.querySelectorAll('.trust-reasons__stat-progress');
+  
+  // Create an intersection observer
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // If the element is visible, set its width to the percentage value
+        const percentage = entry.target.querySelector('.trust-reasons__stat-percentage').textContent;
+        entry.target.style.width = percentage;
+        
+        // Stop observing this element
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  
+  // Start observing each progress bar
+  progressBars.forEach(bar => {
+    // Store the target width
+    const percentage = bar.querySelector('.trust-reasons__stat-percentage').textContent;
+    // Set initial width to 0
+    bar.style.width = '0%';
+    // Observe the bar
+    observer.observe(bar);
+  });
+});
+</script>
+
+{% schema %}
+{
+  "name": "Trust Reasons",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Reasons why you should trust us"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subheading",
+      "default": "Our products are trusted by customers worldwide"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#141414"
+    },
+    {
+      "type": "color",
+      "id": "bar_background_color",
+      "label": "Progress bar background",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "color",
+      "id": "bar_color",
+      "label": "Progress bar color",
+      "default": "#e1c68b"
+    },
+    {
+      "type": "color",
+      "id": "percentage_color",
+      "label": "Percentage text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Call to action"
+    },
+    {
+      "type": "checkbox",
+      "id": "add_cta",
+      "label": "Add call to action",
+      "default": false
+    },
+    {
+      "type": "richtext",
+      "id": "cta_text",
+      "label": "CTA text",
+      "default": "<p>Ready to experience the difference? Try our products today.</p>"
+    },
+    {
+      "type": "text",
+      "id": "cta_button_text",
+      "label": "Button text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "cta_button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "color",
+      "id": "cta_background_color",
+      "label": "CTA background color",
+      "default": "#141414"
+    },
+    {
+      "type": "color",
+      "id": "cta_text_color",
+      "label": "CTA text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "cta_button_background",
+      "label": "CTA button background",
+      "default": "#e1c68b"
+    },
+    {
+      "type": "color",
+      "id": "cta_button_text_color",
+      "label": "CTA button text color",
+      "default": "#141414"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Statistic",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Statistic text",
+          "default": "Satisfaction guaranteed with our premium products"
+        },
+        {
+          "type": "range",
+          "id": "percentage",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Percentage",
+          "default": 95
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust Reasons",
+      "category": "Custom",
+      "blocks": [
+        {
+          "type": "stat",
+          "settings": {
+            "text": "Customer satisfaction with our quality products",
+            "percentage": 96
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "text": "Orders delivered on time with care",
+            "percentage": 93
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "text": "Customers who become repeat buyers",
+            "percentage": 89
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "text": "Products that exceed industry standards",
+            "percentage": 95
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

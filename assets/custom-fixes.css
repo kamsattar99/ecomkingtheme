@@ -1,0 +1,99 @@
+/* Custom fixes for Ecom King Theme */
+
+/* Fix for white gap at the top of the page */
+body {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+html, body {
+  overflow-x: hidden;
+}
+
+.announcement-bar {
+  margin-top: 0 !important;
+  padding-top: 10px !important;
+}
+
+.page-container {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Ecom King branding colors */
+:root {
+  --color-primary: #e1c68b;
+  --color-secondary: #141414;
+}
+
+/* Product page custom sections styling */
+.product-discover-section {
+  background-color: var(--color-primary);
+  color: var(--color-secondary);
+  padding: 60px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.product-discover-section .wave-bg {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1;
+}
+
+.product-discover-section .content {
+  position: relative;
+  z-index: 2;
+}
+
+.trust-reasons-section {
+  background-color: #f9f9f9;
+  padding: 60px 0;
+}
+
+.trust-reasons-section .percentage-bar {
+  height: 8px;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  margin-bottom: 30px;
+}
+
+.trust-reasons-section .percentage-bar .fill {
+  height: 100%;
+  background-color: var(--color-primary);
+  border-radius: 4px;
+}
+
+.product-features-section {
+  padding: 60px 0;
+}
+
+.product-features-section .feature-item {
+  margin-bottom: 30px;
+}
+
+.product-features-section .feature-icon {
+  color: var(--color-primary);
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.testimonials-section {
+  background-color: #f5f5f5;
+  padding: 60px 0;
+}
+
+.testimonials-section .testimonial-card {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 25px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  margin-bottom: 20px;
+}
+
+.testimonials-section .stars {
+  color: var(--color-primary);
+  margin-bottom: 15px;
+}

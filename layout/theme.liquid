@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="{{ shop.locale }}">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#e1c68b">
+  <link rel="canonical" href="{{ canonical_url }}">
+
+  <title>
+    {{ page_title }}{% if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif %}{% if current_page != 1 %} &ndash; Page {{ current_page }}{% endif %}{% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
+  </title>
+
+  {% if page_description %}
+    <meta name="description" content="{{ page_description | escape }}">
+  {% endif %}
+
+  <!-- Favicon -->
+  {% if settings.favicon != blank %}
+    <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x' }}" type="image/png">
+  {% endif %}
+
+  <!-- CSS -->
+  {% render 'stylesheet-tags' %}
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Swiper JS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/7.0.0/swiper-bundle.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/7.0.0/swiper-bundle.min.js" defer></script>
+
+  <!-- Header hook for plugins -->
+  {{ content_for_header }}
+
+  <script>
+    document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+    window.theme = window.theme || {};
+    theme.strings = {
+      addToCart: {{ 'products.product.add_to_cart' | t | json }},
+      soldOut: {{ 'products.product.sold_out' | t | json }},
+      unavailable: {{ 'products.product.unavailable' | t | json }}
+    };
+    theme.settings = {
+      cartType: {{ settings.cart_type | json }},
+      moneyFormat: {{ shop.money_format | json }}
+    };
+  </script>
+</head>
+
+<body class="template-{{ template.name | handle }}">
+  <a class="skip-to-content-link visually-hidden" href="#MainContent">
+    {{ 'accessibility.skip_to_text' | t }}
+  </a>
+
+  {% section 'announcement-bar' %}
+  
+  <div class="page-container">
+    {% section 'header' %}
+
+    <main role="main" id="MainContent" class="main-content js-main-content">
+      {{ content_for_layout }}
+    </main>
+
+    {% section 'footer' %}
+  </div>
+
+  <!-- Modal cart drawer -->
+  <div id="CartDrawer" class="drawer cart-drawer">
+    <div class="drawer__inner">
+      <div class="drawer__header">
+        <h2 class="drawer__title">{{ 'cart.general.title' | t }}</h2>
+        <button type="button" class="drawer__close" aria-label="{{ 'cart.general.close_cart' | t }}">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div id="CartContainer" class="drawer__content"></div>
+    </div>
+  </div>
+
+  <!-- Search drawer -->
+  <div id="SearchDrawer" class="drawer search-drawer">
+    <div class="drawer__inner">
+      <div class="drawer__header">
+        <h2 class="drawer__title">{{ 'general.search.title' | t }}</h2>
+        <button type="button" class="drawer__close" aria-label="{{ 'general.search.close' | t }}">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="drawer__content">
+        <form action="{{ routes.search_url }}" method="get" role="search" class="search-form">
+          <div class="search-form__input-wrapper">
+            <input type="text" name="q" class="search-form__input" placeholder="{{ 'general.search.placeholder' | t }}" aria-label="{{ 'general.search.placeholder' | t }}">
+            <button type="submit" class="search-form__submit">
+              <i class="fas fa-search" aria-hidden="true"></i>
+              <span class="visually-hidden">{{ 'general.search.submit' | t }}</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overlay -->
+  <div class="overlay"></div>
+
+  <!-- JS -->
+  {{ 'theme.js' | asset_url | script_tag }}
+</body>
+</html>

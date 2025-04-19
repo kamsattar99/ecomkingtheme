@@ -1,0 +1,251 @@
+{%- liquid
+  assign main_menu = linklists[section.settings.menu]
+  assign logo_max_width = section.settings.logo_max_width
+  assign enable_sticky = section.settings.enable_sticky_header
+-%}
+
+<header class="site-header" data-section-id="{{ section.id }}" data-section-type="header" {% if enable_sticky %}data-sticky-header="true"{% endif %} style="background-color: {{ section.settings.bg_color }};">
+  <div class="container">
+    <div class="header-wrapper">
+      <!-- Logo -->
+      <div class="header-item header-item--logo">
+        {% if section.settings.logo %}
+          <a href="/" class="site-header__logo-image" style="max-width: {{ logo_max_width }}px;">
+            <img 
+              src="{{ section.settings.logo | img_url: 'master' }}" 
+              alt="{{ shop.name }}"
+              width="{{ section.settings.logo.width }}"
+              height="{{ section.settings.logo.height }}"
+              loading="lazy">
+          </a>
+        {% else %}
+          <a href="/" class="header__logo-text" style="color: {{ section.settings.text_color }};">{{ shop.name }}</a>
+        {% endif %}
+      </div>
+
+      <!-- Navigation -->
+      <nav class="header-item header-item--navigation" role="navigation">
+        <ul class="site-nav" style="color: {{ section.settings.text_color }};">
+          {% for link in main_menu.links %}
+            {%- liquid
+              assign has_dropdown = false
+              if link.links.size > 0
+                assign has_dropdown = true
+              endif
+            -%}
+            
+            <li class="site-nav__item{% if has_dropdown %} site-nav--has-dropdown{% endif %}">
+              <a 
+                href="{{ link.url }}" 
+                class="site-nav__link {% if has_dropdown %}site-nav__link--has-dropdown{% endif %} {% if link.active %}site-nav__link--active{% endif %}"
+                {% if has_dropdown %}aria-expanded="false"{% endif %}
+                style="color: {{ section.settings.text_color }};"
+              >
+                {{ link.title }}
+                {% if has_dropdown %}
+                  <span class="icon icon-chevron-down" aria-hidden="true">
+                    <i class="fas fa-chevron-down"></i>
+                  </span>
+                {% endif %}
+              </a>
+              
+              {% if has_dropdown %}
+                <ul class="site-nav__dropdown">
+                  {% for childlink in link.links %}
+                    {%- liquid
+                      assign has_sub_dropdown = false
+                      if childlink.links.size > 0
+                        assign has_sub_dropdown = true
+                      endif
+                    -%}
+                    
+                    <li class="{% if has_sub_dropdown %}site-nav__deep-dropdown-trigger{% endif %}">
+                      <a 
+                        href="{{ childlink.url }}" 
+                        class="site-nav__dropdown-link {% if has_sub_dropdown %}site-nav__dropdown-link--has-children{% endif %} {% if childlink.active %}site-nav__dropdown-link--active{% endif %}"
+                      >
+                        {{ childlink.title }}
+                        {% if has_sub_dropdown %}
+                          <span class="icon icon-chevron-right" aria-hidden="true">
+                            <i class="fas fa-chevron-right"></i>
+                          </span>
+                        {% endif %}
+                      </a>
+                      
+                      {% if has_sub_dropdown %}
+                        <ul class="site-nav__deep-dropdown">
+                          {% for grandchildlink in childlink.links %}
+                            <li>
+                              <a 
+                                href="{{ grandchildlink.url }}" 
+                                class="site-nav__dropdown-link {% if grandchildlink.active %}site-nav__dropdown-link--active{% endif %}"
+                              >
+                                {{ grandchildlink.title }}
+                              </a>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      {% endif %}
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      </nav>
+
+      <!-- Icons -->
+      <div class="header-item header-item--icons">
+        <!-- Search -->
+        <div class="header-icon header-icon--search">
+          <button type="button" class="js-drawer-open" aria-expanded="false" aria-controls="SearchDrawer" style="color: {{ section.settings.text_color }};">
+            <span class="visually-hidden">{{ 'general.search.title' | t }}</span>
+            <i class="fas fa-search" aria-hidden="true"></i>
+          </button>
+        </div>
+
+        <!-- Account -->
+        <div class="header-icon header-icon--account">
+          {% if shop.customer_accounts_enabled %}
+            <a href="{{ routes.account_url }}" style="color: {{ section.settings.text_color }};">
+              <span class="visually-hidden">{{ 'layout.customer.account' | t }}</span>
+              <i class="fas fa-user" aria-hidden="true"></i>
+            </a>
+          {% endif %}
+        </div>
+
+        <!-- Cart -->
+        <div class="header-icon header-icon--cart">
+          <button type="button" class="js-drawer-open" aria-expanded="false" aria-controls="CartDrawer" style="color: {{ section.settings.text_color }};">
+            <span class="visually-hidden">{{ 'layout.cart.title' | t }}</span>
+            <i class="fas fa-shopping-bag" aria-hidden="true"></i>
+            <span class="cart-count" data-cart-count>
+              {{ cart.item_count }}
+            </span>
+          </button>
+        </div>
+
+        <!-- Mobile menu toggle -->
+        <div class="header-icon header-icon--menu d-lg-none">
+          <button type="button" class="mobile-nav-toggle" aria-expanded="false" aria-controls="MobileNav" style="color: {{ section.settings.text_color }};">
+            <span class="visually-hidden">{{ 'general.navigation.menu' | t }}</span>
+            <i class="fas fa-bars" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile navigation drawer -->
+  <div id="MobileNav" class="mobile-nav drawer">
+    <div class="drawer__inner">
+      <div class="drawer__header">
+        <h2 class="drawer__title">{{ 'general.navigation.menu' | t }}</h2>
+        <button type="button" class="drawer__close mobile-nav-toggle" aria-label="{{ 'general.navigation.close_menu' | t }}">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <ul class="mobile-nav__list">
+        {% for link in main_menu.links %}
+          {%- liquid
+            assign has_dropdown = false
+            if link.links.size > 0
+              assign has_dropdown = true
+            endif
+          -%}
+          
+          <li class="mobile-nav__item{% if has_dropdown %} mobile-nav--has-dropdown{% endif %}">
+            <a 
+              href="{{ link.url }}" 
+              class="mobile-nav__link {% if link.active %}mobile-nav__link--active{% endif %}"
+              {% if has_dropdown %}aria-expanded="false"{% endif %}
+            >
+              {{ link.title }}
+              {% if has_dropdown %}
+                <span class="icon icon-chevron-down mobile-nav__toggle-open" aria-hidden="true">
+                  <i class="fas fa-chevron-down"></i>
+                </span>
+                <span class="icon icon-chevron-up mobile-nav__toggle-close" aria-hidden="true">
+                  <i class="fas fa-chevron-up"></i>
+                </span>
+              {% endif %}
+            </a>
+            
+            {% if has_dropdown %}
+              <ul class="mobile-nav__dropdown">
+                {% for childlink in link.links %}
+                  <li class="mobile-nav__item">
+                    <a 
+                      href="{{ childlink.url }}" 
+                      class="mobile-nav__link {% if childlink.active %}mobile-nav__link--active{% endif %}"
+                    >
+                      {{ childlink.title }}
+                    </a>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image"
+    },
+    {
+      "type": "range",
+      "id": "logo_max_width",
+      "label": "Logo maximum width",
+      "min": 50,
+      "max": 250,
+      "step": 5,
+      "default": 100,
+      "unit": "px"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_header",
+      "label": "Enable sticky header",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#141414"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "#e1c68b"
+    }
+  ]
+}
+{% endschema %}

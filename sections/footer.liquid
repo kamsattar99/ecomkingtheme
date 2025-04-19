@@ -1,0 +1,317 @@
+{%- liquid
+  assign show_newsletter = section.settings.show_newsletter
+  assign show_social_icons = section.settings.show_social_icons
+  assign show_payment_icons = section.settings.show_payment_icons
+-%}
+
+<footer class="site-footer" data-section-id="{{ section.id }}" data-section-type="footer" style="background-color: {{ section.settings.bg_color }}; color: {{ section.settings.text_color }};">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-grid">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'text' -%}
+              <div class="footer-block footer-block--text" {{ block.shopify_attributes }}>
+                {%- if block.settings.title != blank -%}
+                  <h3 class="footer-block__title" style="color: {{ section.settings.accent_color }};">{{ block.settings.title }}</h3>
+                {%- endif -%}
+                
+                {%- if block.settings.text != blank -%}
+                  <div class="footer-block__content rte">
+                    {{ block.settings.text }}
+                  </div>
+                {%- endif -%}
+              </div>
+            
+            {%- when 'newsletter' -%}
+              {%- if show_newsletter -%}
+                <div class="footer-block footer-block--newsletter" {{ block.shopify_attributes }}>
+                  {%- if block.settings.title != blank -%}
+                    <h3 class="footer-block__title" style="color: {{ section.settings.accent_color }};">{{ block.settings.title }}</h3>
+                  {%- endif -%}
+                  
+                  {%- if block.settings.text != blank -%}
+                    <div class="footer-block__content rte">
+                      {{ block.settings.text }}
+                    </div>
+                  {%- endif -%}
+                  
+                  {%- form 'customer', id: 'ContactFooter' -%}
+                    {%- if form.posted_successfully? -%}
+                      <p class="form-success">{{ 'general.newsletter_form.confirmation' | t }}</p>
+                    {%- else -%}
+                      <input type="hidden" name="contact[tags]" value="newsletter">
+                      <div class="newsletter-form">
+                        <div class="newsletter-form__field-wrapper">
+                          <div class="form-field">
+                            <input
+                              id="NewsletterForm--{{ section.id }}"
+                              type="email"
+                              name="contact[email]"
+                              class="form-field__input"
+                              value="{{ form.email }}"
+                              aria-required="true"
+                              autocorrect="off"
+                              autocapitalize="off"
+                              autocomplete="email"
+                              {% if form.errors contains 'email' %}
+                                aria-invalid="true"
+                                aria-describedby="ContactFooter-email-error"
+                              {% endif %}
+                              placeholder="{{ 'general.newsletter_form.email_placeholder' | t }}"
+                              required
+                            >
+                            <label class="form-field__label" for="NewsletterForm--{{ section.id }}">
+                              {{ 'general.newsletter_form.email_placeholder' | t }}
+                            </label>
+                          </div>
+                          <button type="submit" class="newsletter-form__button btn" name="commit" style="background-color: {{ section.settings.accent_color }}; color: {{ section.settings.bg_color }};">
+                            <span>{{ 'general.newsletter_form.submit' | t }}</span>
+                            <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                          </button>
+                        </div>
+                        {%- if form.errors contains 'email' -%}
+                          <div id="ContactFooter-email-error" class="form-error">
+                            {{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}
+                          </div>
+                        {%- endif -%}
+                      </div>
+                    {%- endif -%}
+                  {%- endform -%}
+                </div>
+              {%- endif -%}
+            
+            {%- when 'link_list' -%}
+              {%- assign footer_linklist = block.settings.menu -%}
+              
+              {%- if footer_linklist != blank -%}
+                <div class="footer-block footer-block--menu" {{ block.shopify_attributes }}>
+                  {%- if block.settings.title != blank -%}
+                    <h3 class="footer-block__title" style="color: {{ section.settings.accent_color }};">{{ block.settings.title }}</h3>
+                  {%- endif -%}
+                  
+                  <ul class="footer-block__menu-list">
+                    {%- for link in footer_linklist.links -%}
+                      <li class="footer-block__menu-item">
+                        <a href="{{ link.url }}" class="footer-block__menu-link{% if link.active %} footer-block__menu-link--active{% endif %}">
+                          {{ link.title }}
+                        </a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                </div>
+              {%- endif -%}
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <div class="footer-bottom__content">
+        <!-- Copyright -->
+        <div class="footer-bottom__copyright">
+          {% if section.settings.copyright_text != blank %}
+            {{ section.settings.copyright_text }}
+          {% else %}
+            &copy; {{ 'now' | date: '%Y' }} {{ shop.name }} | Powered by <span style="color: {{ section.settings.accent_color }};">Ecom King</span>
+          {% endif %}
+        </div>
+        
+        <!-- Social Icons -->
+        {% if show_social_icons %}
+          <ul class="footer-bottom__social-icons">
+            {%- if settings.social_facebook != blank -%}
+              <li class="social-icon">
+                <a href="{{ settings.social_facebook }}" style="color: {{ section.settings.accent_color }};">
+                  <i class="fab fa-facebook-f" aria-hidden="true"></i>
+                  <span class="visually-hidden">Facebook</span>
+                </a>
+              </li>
+            {%- endif -%}
+            {%- if settings.social_twitter != blank -%}
+              <li class="social-icon">
+                <a href="{{ settings.social_twitter }}" style="color: {{ section.settings.accent_color }};">
+                  <i class="fab fa-twitter" aria-hidden="true"></i>
+                  <span class="visually-hidden">Twitter</span>
+                </a>
+              </li>
+            {%- endif -%}
+            {%- if settings.social_instagram != blank -%}
+              <li class="social-icon">
+                <a href="{{ settings.social_instagram }}" style="color: {{ section.settings.accent_color }};">
+                  <i class="fab fa-instagram" aria-hidden="true"></i>
+                  <span class="visually-hidden">Instagram</span>
+                </a>
+              </li>
+            {%- endif -%}
+            {%- if settings.social_pinterest != blank -%}
+              <li class="social-icon">
+                <a href="{{ settings.social_pinterest }}" style="color: {{ section.settings.accent_color }};">
+                  <i class="fab fa-pinterest-p" aria-hidden="true"></i>
+                  <span class="visually-hidden">Pinterest</span>
+                </a>
+              </li>
+            {%- endif -%}
+            {%- if settings.social_youtube != blank -%}
+              <li class="social-icon">
+                <a href="{{ settings.social_youtube }}" style="color: {{ section.settings.accent_color }};">
+                  <i class="fab fa-youtube" aria-hidden="true"></i>
+                  <span class="visually-hidden">YouTube</span>
+                </a>
+              </li>
+            {%- endif -%}
+            {%- if settings.social_tiktok != blank -%}
+              <li class="social-icon">
+                <a href="{{ settings.social_tiktok }}" style="color: {{ section.settings.accent_color }};">
+                  <i class="fab fa-tiktok" aria-hidden="true"></i>
+                  <span class="visually-hidden">TikTok</span>
+                </a>
+              </li>
+            {%- endif -%}
+          </ul>
+        {% endif %}
+        
+        <!-- Payment Icons -->
+        {% if show_payment_icons %}
+          <div class="footer-bottom__payment-icons">
+            <span class="payment-icon-text">{{ 'sections.footer.payment.payment_methods' | t }}</span>
+            <ul class="payment-icons">
+              {% for type in shop.enabled_payment_types %}
+                <li class="payment-icon">
+                  {{ type | payment_type_svg_tag }}
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_newsletter",
+      "label": "Show newsletter",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social_icons",
+      "label": "Show social icons",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show payment icons",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright text"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#141414"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "#e1c68b"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "About our store"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>"
+        }
+      ]
+    },
+    {
+      "type": "link_list",
+      "name": "Menu",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Quick links"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu",
+          "default": "footer"
+        }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Subscribe to our newsletter"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer",
+      "blocks": [
+        {
+          "type": "text"
+        },
+        {
+          "type": "link_list"
+        },
+        {
+          "type": "newsletter"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
